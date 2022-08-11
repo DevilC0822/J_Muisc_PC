@@ -2,6 +2,7 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router/router'
 import './assets/style/index.scss'
+import './assets/style/iconfont.js'
 // 修复 Naive UI 和 Tailwind 样式优先级引起的样式错误问题
 import { useMutationObserver } from '@vueuse/core'
 useMutationObserver(

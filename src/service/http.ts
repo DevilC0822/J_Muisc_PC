@@ -1,17 +1,24 @@
+//http.ts
 import axios, { AxiosRequestConfig } from 'axios'
 
 // 设置请求头和请求路径
 // axios.defaults.baseURL = '/api'
 axios.defaults.baseURL = 'http://175.24.198.84:3000/'
-axios.defaults.withCredentials = true
+
 axios.defaults.timeout = 10000
+axios.defaults.withCredentials = true
 axios.defaults.headers.post['Content-Type'] = 'application/json;charset=UTF-8'
 axios.interceptors.request.use(
   (config): AxiosRequestConfig<any> => {
-    const token = window.sessionStorage.getItem('token')
+    const token = window.localStorage.getItem('token')
+    // const cookie = window.localStorage.getItem('cookie')
     if (token) {
-      //@ts-ignore
-      config.headers.token = token
+      config.headers!.token = token
+    }
+    config.params = {
+      realIP: '116.25.146.177',
+      timerstamp: Date.parse(new Date().toString()) / 1000,
+      ...config.params,
     }
     return config
   },
@@ -21,18 +28,14 @@ axios.interceptors.request.use(
 )
 // 响应拦截
 axios.interceptors.response.use((res) => {
-  if (res.data.code === 111) {
-    sessionStorage.setItem('token', '')
-    // token过期操作
-  }
   return res
 })
 
 interface ResType<T> {
-  [x: string]: any
+  [propsName: string]: any
   code: number
   data?: T
-  msg: string
+  msg?: string
   err?: string
 }
 interface Http {

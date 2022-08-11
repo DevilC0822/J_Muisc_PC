@@ -48,4 +48,8 @@ export default defineConfig({
       },
     },
   },
+  base: './',
+  build: {
+    chunkSizeWarningLimit: 1024,
+  },
 })
