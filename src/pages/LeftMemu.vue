@@ -19,7 +19,9 @@
         class="child-item"
         @click="gpPages(item.routerPath)"
       >
-        <i :class="item.icon" class="iconfont"></i>
+        <svg class="icon" aria-hidden="true">
+          <use :xlink:href="item.icon"></use>
+        </svg>
         <p>{{ item.name }}</p>
       </div>
     </div>
@@ -32,7 +34,9 @@
         class="child-item"
         @click="gpPages(item.routerPath)"
       >
-        <i :class="item.icon" class="iconfont"></i>
+        <svg class="icon" aria-hidden="true">
+          <use :xlink:href="item.icon"></use>
+        </svg>
         <p>{{ item.name }}</p>
       </div>
     </div>
@@ -70,49 +74,49 @@ const MenuList = ref([
   {
     name: '首页',
     routerPath: '/main',
-    icon: 'icon-1_music72',
+    icon: '#icon-1_music72',
     isActive: true,
     category: 'findMusic',
   },
   {
     name: '专辑',
     routerPath: '/albums',
-    icon: 'icon-music-albums',
+    icon: '#icon-music-albums',
     isActive: false,
     category: 'findMusic',
   },
   {
     name: '歌手',
     routerPath: '/singer',
-    icon: 'icon-yinlemusic217',
+    icon: '#icon-yinlemusic217',
     isActive: false,
     category: 'findMusic',
   },
   {
     name: '播客',
     routerPath: '/podcasts',
-    icon: 'icon-a-maikefengyinle',
+    icon: '#icon-a-maikefengyinle',
     isActive: false,
     category: 'findMusic',
   },
   {
     name: '本地与下载',
     routerPath: '/localdownload',
-    icon: 'icon-music-player',
+    icon: '#icon-music-player',
     isActive: false,
     category: 'myMusic',
   },
   {
     name: '我喜欢的音乐',
     routerPath: '/mylike',
-    icon: 'icon-romantic-music',
+    icon: '#icon-romantic-music',
     isActive: false,
     category: 'myMusic',
   },
   {
     name: '创建歌单',
     routerPath: '/createplaylists',
-    icon: 'icon-add',
+    icon: '#icon-add',
     isActive: false,
     category: 'myMusic',
   },
@@ -140,6 +144,7 @@ const gpPages = (page: string) => {
       font-weight: bold;
     }
     .child-item {
+      cursor: pointer;
       display: flex;
       margin-top: 1rem;
       align-items: center;

@@ -91,6 +91,7 @@ onMounted(() => {
     display: flex;
 
     .icon {
+      cursor: pointer;
       padding: 1rem;
       display: flex;
       justify-content: center;
@@ -122,6 +123,7 @@ onMounted(() => {
     display: flex;
 
     .icon {
+      cursor: pointer;
       padding: 1rem;
       display: flex;
       justify-content: center;

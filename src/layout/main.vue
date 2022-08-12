@@ -1,18 +1,10 @@
 <template>
   <n-layout has-sider class="p-[4rem] box-border">
     <JMemu></JMemu>
-    <n-layout>
-      <n-layout-header>
-        <JHeader></JHeader>
-      </n-layout-header>
-      <n-layout-content>
-        <n-layout has-sider>
-          <n-layout-content>
-            <JMain></JMain>
-          </n-layout-content>
-        </n-layout>
-      </n-layout-content>
-    </n-layout>
+    <div class="flex-1">
+      <JHeader></JHeader>
+      <JMain></JMain>
+    </div>
   </n-layout>
 </template>
 

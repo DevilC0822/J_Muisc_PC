@@ -1,6 +1,10 @@
 <template>
   <div class="header min-h-[92rem] box-border">
-    <router-view></router-view>
+    <router-view v-slot="{ Component }">
+      <keep-alive>
+        <component :is="Component" />
+      </keep-alive>
+    </router-view>
   </div>
 </template>
 
