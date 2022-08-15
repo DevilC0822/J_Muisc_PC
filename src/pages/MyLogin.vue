@@ -22,7 +22,7 @@
         <n-form-item label="手机号" :rule="ruleUsername">
           <n-input v-model:value="username" />
         </n-form-item>
-        <n-form-item label="验证码" :rule="rulePassword" class="captcha-form">
+        <n-form-item label="验证码" :rule="ruleCaptcha" class="captcha-form">
           <n-input v-model:value="password" style="width: 80%" />
           <n-button @click="sendCaptcha"> 发送验证码 </n-button>
         </n-form-item>
@@ -63,11 +63,20 @@ const rulePassword = {
     }
   },
 }
+const ruleCaptcha = {
+  trigger: ['blur'],
+  validator() {
+    if (password.value === '') {
+      return new Error('请输入验证码')
+    }
+  },
+}
 
 const emit = defineEmits(['closeModal'])
 
 // 手机号和用户名登录
 const loginIn = async (captcha = '') => {
+  if (!username.value) return window.$message.error('用户名或手机号不能为空')
   let req
   req = {
     phone: username.value,

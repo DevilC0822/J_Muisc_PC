@@ -5,13 +5,14 @@ export default async function useIDGetInfo(id: string) {
     name: string
     artist: string
     picurl: string
+    id: string
   }
 
   const result: ISong[] = []
   const res = await songApi.songDetail({
     ids: id,
   })
-  res.songs.forEach((item: { ar: any[]; al: { name: any; picUrl: any } }) => {
+  res.songs.forEach((item: { ar: any[]; name: string; al: { picUrl: any }; id: string }) => {
     const artists: Array<string> = []
     if (item.ar.length >= 3) {
       for (const key in item.ar.slice(0, 3)) {
@@ -24,9 +25,10 @@ export default async function useIDGetInfo(id: string) {
     }
     const artistsFull = artists.join(' / ')
     result.push({
-      name: item.al.name,
+      name: item.name,
       artist: artistsFull,
       picurl: item.al.picUrl,
+      id: item.id,
     })
   })
   return result

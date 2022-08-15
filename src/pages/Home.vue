@@ -1,11 +1,21 @@
 <template>
   <section class="Home p-[2rem] flex">
     <div class="w-[98.5rem] main">
-      <header class="relative cursor-pointer">
+      <header
+        v-if="loginStatus"
+        class="relative cursor-pointer"
+        @click="router.push({ name: 'RecommendedTodaySong' })"
+      >
         <img :src="mylikePoster" alt="" />
         <p class="absolute top-[8rem] left-[6rem] text-[2.4rem]">每日推荐</p>
         <p class="absolute top-[15rem] left-[6rem] text-[4.8rem] leading-tight">
           YOUR LIked <br />Songs
+        </p>
+      </header>
+      <header v-else class="relative cursor-pointer" @click="showLoginModal = true">
+        <img :src="mylikePoster" alt="" />
+        <p class="absolute top-[15rem] left-[6rem] text-[3.2rem] leading-tight">
+          登录获取更多精彩内容
         </p>
       </header>
       <main class="flex flex-wrap justify-between">
@@ -16,20 +26,31 @@
           class="flex-none w-[23%] relative cursor-pointer"
           @click="goDetail(item.id)"
         >
-          <img :src="item.coverImgUrl" alt="" class="rounded-[1.6rem]" />
+          <img :src="item.picUrl" alt="" class="rounded-[1.6rem]" />
           <n-ellipsis :line-clamp="2">
             <p class="mt-[1rem] text-[1.6rem]">{{ item.name }}</p>
           </n-ellipsis>
           <p
             class="play-count absolute top-[1rem] left-[1rem] bg-[#3c3d41] px-[1rem] rounded-[1.6rem]"
           >
-            <span class="text-[#fff]">{{ numChange(item.playCount) }}</span>
+            <span class="text-[#fff]">{{ item.playCount }}</span>
           </p>
         </div>
       </main>
     </div>
     <JAside></JAside>
   </section>
+  <n-modal
+    v-model:show="showLoginModal"
+    style="width: 600px"
+    :bordered="false"
+    :mask-closable="false"
+    size="huge"
+    role="dialog"
+    aria-modal="true"
+  >
+    <MyLogin @close-modal="showLoginModal = false"></MyLogin>
+  </n-modal>
 </template>
 
 <script setup lang="ts">
@@ -38,9 +59,11 @@ import mylikePoster from '@/assets/img/mylikePoster.png'
 import JAside from '@/layout/JAside.vue'
 import usePlayList from '@/hooks/playlist/usePlayList'
 import { useRouter } from 'vue-router'
-import { numChange } from '@/utils/main'
+import MyLogin from './MyLogin.vue'
+import { loginStatus } from '@/hooks/useLoginInfo'
 
 const playLists = ref<any>([])
+const showLoginModal = ref(false)
 onBeforeMount(async () => {
   const res = await usePlayList(8)
   playLists.value = res.playList
@@ -51,7 +74,7 @@ const goDetail = (id: string) => {
   router.push({
     name: 'PlayListDetail',
     params: {
-      id,
+      playlistID: id,
     },
   })
 }

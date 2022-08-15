@@ -9,7 +9,12 @@ export const playlistDetail = (params: T.IPlaylistDetail) => {
   return http.get('/playlist/detail', params)
 }
 
+export const recommendPlaylist = () => {
+  return http.get('/recommend/resource')
+}
+
 export default {
   playlistDetail,
   topPlaylist,
+  recommendPlaylist,
 }

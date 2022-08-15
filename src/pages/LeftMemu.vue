@@ -17,7 +17,7 @@
         :key="item.name"
         :class="item.isActive ? 'active' : ''"
         class="child-item"
-        @click="gpPages(item.routerPath)"
+        @click="goPages(item.routerPath)"
       >
         <svg class="icon" aria-hidden="true">
           <use :xlink:href="item.icon"></use>
@@ -32,7 +32,7 @@
         :key="item.name"
         :class="item.isActive ? 'active' : ''"
         class="child-item"
-        @click="gpPages(item.routerPath)"
+        @click="goPages(item.routerPath)"
       >
         <svg class="icon" aria-hidden="true">
           <use :xlink:href="item.icon"></use>
@@ -64,8 +64,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { ref, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import { loginStatus, userInfo } from '@/hooks/useLoginInfo'
 import MyLogin from './MyLogin.vue'
 
@@ -125,14 +125,22 @@ const resetActive = () => {
   MenuList.value.forEach((item) => (item.isActive = false))
 }
 const router = useRouter()
-const gpPages = (page: string) => {
+const goPages = (page: string) => {
   router.push(page)
-  resetActive()
-  // eslint-disable-next-line prettier/prettier
-  const targetIndex = MenuList.value.findIndex((item) => item.routerPath === page)
-  if (targetIndex === -1) return
-  MenuList.value[targetIndex].isActive = true
 }
+const route = useRoute()
+watch(
+  () => route.path,
+  (val) => {
+    if (val) {
+      resetActive()
+      // eslint-disable-next-line prettier/prettier
+      const targetIndex = MenuList.value.findIndex((item) => item.routerPath === val)
+      if (targetIndex === -1) return
+      MenuList.value[targetIndex].isActive = true
+    }
+  }
+)
 </script>
 
 <style scoped lang="scss">

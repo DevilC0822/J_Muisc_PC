@@ -1,10 +1,10 @@
 <template>
   <section id="Header">
     <div class="page-contral">
-      <svg class="icon" aria-hidden="true">
+      <svg class="icon" aria-hidden="true" @click="arrowLeftClick">
         <use xlink:href="#icon-arrowleft"></use>
       </svg>
-      <svg class="icon" aria-hidden="true">
+      <svg class="icon" aria-hidden="true" @click="arrowRightClick">
         <use xlink:href="#icon-arrowright"></use>
       </svg>
     </div>
@@ -38,22 +38,33 @@
         </svg>
       </div>
       <div class="time-box ml-[2rem] mb-[-2rem]">
-        <n-time :time="nowtime" format="yyyy-MM-dd hh:mm:ss" />
+        <p>{{ currentTime }}</p>
       </div>
     </div>
   </section>
 </template>
 
 <script setup lang="ts">
-import { onMounted, reactive, ref, watch } from 'vue'
+import { reactive, watch } from 'vue'
 import useTheme from '@/hooks/useTheme'
+import { useRouter } from 'vue-router'
+import { useDateFormat, useNow } from '@vueuse/core'
 
+const currentTime = useDateFormat(useNow(), 'YYYY-MM-DD HH:mm:ss')
 const { theme, changeTheme } = useTheme
 const styles = reactive({
   headerBackgroundColor: '#f5f6f8',
   backgroundColor: '#fff',
   color: '#000',
 })
+
+const router = useRouter()
+const arrowLeftClick = () => {
+  router.back()
+}
+const arrowRightClick = () => {
+  router.forward()
+}
 
 watch(
   () => theme.value?.name,
@@ -69,14 +80,6 @@ watch(
     styles.color = '#000'
   }
 )
-// eslint-disable-next-line no-undef
-const timer = ref<NodeJS.Timer>()
-const nowtime = ref<Date>()
-onMounted(() => {
-  timer.value = setInterval(() => {
-    nowtime.value = new Date()
-  }, 1000)
-})
 </script>
 
 <style scoped lang="scss">
