@@ -27,7 +27,7 @@ export const singerAlbums = (params: T.ISingerId) => {
 }
 
 // 歌手分类列表
-export const singerCategory = (params: T.ISingerId) => {
+export const singerCategory = (params: T.ISingerCategory) => {
   return http.get('/artist/list', params)
 }
 export default {
@@ -36,4 +36,5 @@ export default {
   singerDesc,
   singerDetail,
   singerAlbums,
+  singerCategory,
 }
