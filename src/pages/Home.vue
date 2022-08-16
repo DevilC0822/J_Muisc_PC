@@ -1,5 +1,5 @@
 <template>
-  <section class="Home p-[2rem] flex">
+  <section class="Home p-[2rem] flex home-main">
     <div class="w-[98.5rem] main">
       <header
         v-if="loginStatus"
@@ -18,6 +18,7 @@
           登录获取更多精彩内容
         </p>
       </header>
+      <p class="text-[3.6rem] font-bold mb-[2rem]">热门歌单</p>
       <main class="flex flex-wrap justify-between">
         <div
           v-for="(item, index) in playLists"
@@ -80,14 +81,4 @@ const goDetail = (id: string) => {
 }
 </script>
 
-<style scoped lang="scss">
-.Home {
-  .main {
-    max-height: 92rem;
-    overflow-y: scroll;
-    &::-webkit-scrollbar {
-      display: none;
-    }
-  }
-}
-</style>
+<style scoped lang="scss"></style>

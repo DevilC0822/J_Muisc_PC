@@ -21,9 +21,19 @@ export const singerDetail = (params: T.ISingerId) => {
   return http.get('/artist/detail', params)
 }
 
+// 获取歌手专辑
+export const singerAlbums = (params: T.ISingerId) => {
+  return http.get('/artist/album', params)
+}
+
+// 歌手分类列表
+export const singerCategory = (params: T.ISingerId) => {
+  return http.get('/artist/list', params)
+}
 export default {
   topSinger,
   singerSongs,
   singerDesc,
   singerDetail,
+  singerAlbums,
 }

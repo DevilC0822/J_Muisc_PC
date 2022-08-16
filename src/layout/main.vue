@@ -1,7 +1,7 @@
 <template>
   <n-layout has-sider class="p-[4rem] box-border">
     <JMemu></JMemu>
-    <div class="flex-1">
+    <div style="width: calc(100% - 33.3rem)">
       <JHeader></JHeader>
       <JMain></JMain>
     </div>

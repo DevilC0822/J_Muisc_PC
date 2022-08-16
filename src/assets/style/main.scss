@@ -12,3 +12,11 @@ $test-color: red;
     display: none;
   }
 }
+
+.home-main {
+  max-height: 92rem;
+  overflow-y: scroll;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}

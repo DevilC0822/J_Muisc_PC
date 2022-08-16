@@ -1,23 +1,18 @@
 <template>
-  <section class="PlayListDetail mt-[2rem] home-main">
-    <div v-if="playlistInfo?.name" class="flex items-center">
-      <img :src="playlistInfo.picUrl" class="w-[30rem] h-[30rem] rounded-[1.6rem] shrink-[0]" />
+  <section class="AlbumsDetail mt-[2rem] home-main">
+    <div v-if="albumsInfo?.name" class="flex items-center">
+      <img :src="albumsInfo.picUrl" class="w-[30rem] h-[30rem] rounded-[1.6rem] shrink-[0]" />
       <div class="ml-[2rem]">
-        <p class="font-bold text-[2.4rem] mb-[1rem]">歌单名：{{ playlistInfo.name }}</p>
+        <p class="font-bold text-[2.4rem] mb-[1rem]">专辑名：{{ albumsInfo.name }}</p>
         <n-ellipsis :line-clamp="4">
-          歌单描述：{{ playlistInfo.description }}
+          专辑描述：{{ albumsInfo.desc }}
           <template #tooltip>
             <div style="text-align: center; width: 100rem">
-              {{ playlistInfo.description }}
+              {{ albumsInfo.desc }}
             </div>
           </template>
         </n-ellipsis>
-        <div class="flex items-center mt-[1rem]">
-          <p>标签：</p>
-          <n-tag v-for="item in playlistInfo.tags" :key="item" type="info" class="mr-[2rem]">
-            {{ item }}
-          </n-tag>
-        </div>
+        <div class="flex items-center mt-[1rem]">发行公司：{{ albumsInfo.company }}</div>
       </div>
     </div>
     <template v-else>
@@ -45,13 +40,18 @@
 <script setup lang="ts">
 import { onBeforeMount, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
-import usePlayListID from '@/hooks/playlist/usePlayListID'
+import useAlbumsID from '@/hooks/albums/useAlbumsID'
 import { useLoadingBar } from 'naive-ui'
-interface IPlaylistDetail {
+interface IAlbumsDetail {
+  commentCount: number // 评论数
+  shareCount: number // 分享数
+  subCount: number // 订阅数
   name: string
-  description: string
+  desc: string
   picUrl: string
-  tags: string[]
+  id: string
+  company: string
+  singer: string
 }
 
 const loadingBar = useLoadingBar()
@@ -69,34 +69,39 @@ const columns = [
   },
 ]
 const songsList = ref<any>([])
-const playlistInfo = ref<IPlaylistDetail>()
+const albumsInfo = ref<IAlbumsDetail>()
 const getsongslist = async (id: string) => {
-  window.sessionStorage.setItem('currentPlaylistID', id)
+  window.sessionStorage.setItem('currentAlbumsID', id)
   songsList.value = []
   loadingBar.start()
   dataLoading.value = true
-  const res = await usePlayListID(id)
-  songsList.value = res.playlistShow
-  playlistInfo.value = res.playlistDetail
+  const res = await useAlbumsID(id)
+  songsList.value = res.songslistShow
+  albumsInfo.value = res.albumsDynamicDetail
   loadingBar.finish()
   dataLoading.value = false
 }
 onBeforeMount(() => {
-  if (route.params.playlistID) {
-    getsongslist(route.params.playlistID as string)
+  if (route.params.albumsID) {
+    getsongslist(route.params.albumsID as string)
     return
   }
-  getsongslist(window.sessionStorage.getItem('currentPlaylistID')!)
+  getsongslist(window.sessionStorage.getItem('currentAlbumsID')!)
 })
 watch(
-  () => route.params.playlistID,
+  () => route.params.albumsID,
   async (val) => {
     if (val) {
-      playlistInfo.value = {
+      albumsInfo.value = {
+        commentCount: 0,
+        shareCount: 0,
+        subCount: 0,
         name: '',
-        description: '',
+        desc: '',
         picUrl: '',
-        tags: [],
+        id: '',
+        company: '',
+        singer: '',
       }
       getsongslist(val as string)
     }

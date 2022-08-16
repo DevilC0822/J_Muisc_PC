@@ -1,7 +1,7 @@
 <template>
-  <section class="Albums home-main">
+  <section class="SingerAlbums">
     <div>
-      <h1 class="text-[3.6rem] font-bold">最新专辑</h1>
+      <h1 class="text-[3.6rem] font-bold mt-[2rem]">{{ singerName }}的专辑</h1>
       <n-carousel slides-per-view="auto" :space-between="20" :loop="false" draggable show-arrow>
         <n-carousel-item v-for="item in albumslist" :key="item.id" style="width: 50rem">
           <div class="cursor-pointer" @click="goDetail(item.id)">
@@ -34,31 +34,21 @@
         </template>
       </n-carousel>
     </div>
-    <SingerAlbums
-      v-for="item in singerlist"
-      :key="item.id"
-      :singer-name="item.name"
-      :singer-id="item.id.toString()"
-    ></SingerAlbums>
   </section>
 </template>
 
 <script setup lang="ts">
-import useAlbums from '@/hooks/albums/useAlbums'
-import useSinger from '@/hooks/singer/useSinger'
-import { onBeforeMount, ref } from 'vue'
+import { getAlbumsShow } from '@/hooks/singer/useSingerID'
+import { onBeforeMount, ref, toRefs } from 'vue'
 import { useRouter } from 'vue-router'
-import SingerAlbums from '@/components/SingerAlbums.vue'
 
+const props = defineProps<{ singerId: string; singerName: string }>()
+const { singerId, singerName } = toRefs(props)
 const albumslist = ref<any>([])
-const singerlist = ref<any>([])
+console.log(singerId)
 onBeforeMount(async () => {
-  const res = await useAlbums()
-  albumslist.value = res.albumslist
-  const resSinger = await useSinger(3)
-  singerlist.value = resSinger.singerlist
+  albumslist.value = await getAlbumsShow(singerId.value)
 })
-
 const router = useRouter()
 const goDetail = (id: string) => {
   router.push({

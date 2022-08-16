@@ -1,5 +1,5 @@
 <template>
-  <section class="PlayListDetail mt-[2rem]">
+  <section class="PlayListDetail mt-[2rem] home-main">
     <div v-if="singerDetail?.name" class="flex items-center">
       <img :src="singerDetail.picUrl" class="w-[30rem] h-[30rem] rounded-[1.6rem] shrink-[0]" />
       <div class="ml-[2rem]">
@@ -31,7 +31,13 @@
         </div>
       </div>
     </template>
-    <div class="mt-[2rem]">
+    <SingerAlbums
+      v-if="singerDetail?.name"
+      :singer-id="singerDetail?.id"
+      :singer-name="singerDetail?.name!"
+    ></SingerAlbums>
+    <p class="text-[3.6rem] font-bold mt-[2rem]">{{ singerDetail?.name! }}的单曲</p>
+    <div>
       <n-data-table
         :data="songsList"
         :columns="columns"
@@ -47,12 +53,14 @@ import { onBeforeMount, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { useLoadingBar } from 'naive-ui'
 import useSingerID from '@/hooks/singer/useSingerID'
+import SingerAlbums from '@/components/SingerAlbums.vue'
 
 interface ISingerDetail {
   name: string
   description: string
   picUrl: string
   tags: string[]
+  id: string
 }
 
 const loadingBar = useLoadingBar()
@@ -98,6 +106,7 @@ watch(
         description: '',
         picUrl: '',
         tags: [],
+        id: '',
       }
       getInfo(val as string)
     }

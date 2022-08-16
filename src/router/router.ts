@@ -57,6 +57,11 @@ const routes: RouteRecordRaw[] = [
         name: 'SingerDetail',
         component: () => import('@/pages/detail/SingerDetail.vue'),
       },
+      {
+        path: 'AlbumsDetail',
+        name: 'AlbumsDetail',
+        component: () => import('@/pages/detail/AlbumsDetail.vue'),
+      },
     ],
   },
   // {
