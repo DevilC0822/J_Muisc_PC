@@ -90,6 +90,7 @@ module.exports = {
     'array-bracket-spacing': 'warn',
     // 强制在代码块中使用一致的大括号风格
     'brace-style': 'warn',
+    'vue/v-on-event-hyphenation': false,
     // 强制使用骆驼拼写法命名约定
     camelcase: 'warn',
     // 强制使用一致的缩进

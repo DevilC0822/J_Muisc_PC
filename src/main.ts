@@ -2,7 +2,7 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router/router'
 import './assets/style/index.scss'
-import '//at.alicdn.com/t/c/font_3002069_81u18ap5mxo.js'
+import '//at.alicdn.com/t/c/font_3002069_3xh531nono9.js'
 
 // 修复 Naive UI 和 Tailwind 样式优先级引起的样式错误问题
 // naive-ui 官方提供的方法

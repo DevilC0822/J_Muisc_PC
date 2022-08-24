@@ -4,7 +4,14 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/',
     redirect: {
-      path: '/main',
+      path: '/home',
+    },
+  },
+  {
+    path: '/home',
+    component: () => import('@/layout/Main.vue'),
+    redirect: {
+      path: '/home/main',
     },
     children: [
       {
@@ -63,6 +70,11 @@ const routes: RouteRecordRaw[] = [
         component: () => import('@/pages/detail/AlbumsDetail.vue'),
       },
     ],
+  },
+  {
+    path: '/Playing',
+    name: 'Playing',
+    component: () => import('@/pages/Playing.vue'),
   },
   // {
   //   path: '/home',

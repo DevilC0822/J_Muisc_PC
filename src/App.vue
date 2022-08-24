@@ -2,21 +2,21 @@
   <n-config-provider :theme="theme">
     <n-message-provider>
       <n-loading-bar-provider>
-        <Main></Main>
-        <n-card>
+        <!-- <Main></Main> -->
+        <RouterView></RouterView>
+        <!-- <n-card>
           <n-space>
             <n-button @click="changeTheme('dark')"> 深色 </n-button>
             <n-button @click="changeTheme('light')"> 浅色 </n-button>
             <n-button @click="checkLoginStatus"> 登录状态 </n-button>
           </n-space>
-        </n-card>
+        </n-card> -->
       </n-loading-bar-provider>
     </n-message-provider>
   </n-config-provider>
 </template>
 
 <script setup lang="ts">
-import Main from '@/layout/Main.vue'
 import useTheme from '@/hooks/useTheme'
 import { loginStatus, updateStatus } from '@/hooks/useLoginInfo'
 
