@@ -7,6 +7,7 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
+    Main: typeof import('./src/components/AudioPlayer/Main.vue')['default']
     NAvatar: typeof import('naive-ui')['NAvatar']
     NButton: typeof import('naive-ui')['NButton']
     NCard: typeof import('naive-ui')['NCard']
@@ -30,7 +31,12 @@ declare module '@vue/runtime-core' {
     NSpin: typeof import('naive-ui')['NSpin']
     NTag: typeof import('naive-ui')['NTag']
     NTooltip: typeof import('naive-ui')['NTooltip']
+    PlayQueue: typeof import('./src/components/AudioPlayer/PlayQueue.vue')['default']
+    Progress: typeof import('./src/components/AudioPlayer/Progress.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    Search: typeof import('./src/components/Search.vue')['default']
+    SingerAlbums: typeof import('./src/components/SingerAlbums.vue')['default']
+    Volume: typeof import('./src/components/AudioPlayer/Volume.vue')['default']
   }
 }

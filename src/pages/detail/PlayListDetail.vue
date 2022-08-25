@@ -31,22 +31,30 @@
         </div>
       </div>
     </template>
-    <div class="mt-[2rem]">
-      <n-data-table
-        :data="songsList"
-        :columns="columns"
-        max-height="90rem"
-        :loading="dataLoading"
-      ></n-data-table>
+    <div class="songlist-box mt-[2rem]">
+      <div class="flex text-[1.6rem] items-center">
+        <p class="w-[45rem]">歌曲名</p>
+        <p class="text-[1.4rem] w-[35rem]">歌手</p>
+      </div>
+      <div
+        v-for="item in songlist"
+        :key="item.name"
+        class="flex text-[1.6rem] items-center"
+        @click="goPlay(item)"
+      >
+        <p class="w-[45rem]">{{ item.name }}</p>
+        <p class="text-[1.4rem] w-[35rem]">{{ item.artist }}</p>
+      </div>
     </div>
   </section>
 </template>
 
 <script setup lang="ts">
 import { onBeforeMount, ref, watch } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import usePlayListID from '@/hooks/playlist/usePlayListID'
 import { useLoadingBar } from 'naive-ui'
+import { useStorage } from '@vueuse/core'
 interface IPlaylistDetail {
   name: string
   description: string
@@ -58,35 +66,34 @@ const loadingBar = useLoadingBar()
 const dataLoading = ref(false)
 const route = useRoute()
 
-const columns = [
-  {
-    title: '歌曲名',
-    key: 'name',
-  },
-  {
-    title: '歌手',
-    key: 'artist',
-  },
-]
-const songsList = ref<any>([])
+const songlist = ref<any>([])
 const playlistInfo = ref<IPlaylistDetail>()
-const getsongslist = async (id: string) => {
+const getsonglist = async (id: string) => {
   window.sessionStorage.setItem('currentPlaylistID', id)
-  songsList.value = []
+  songlist.value = []
   loadingBar.start()
   dataLoading.value = true
   const res = await usePlayListID(id)
-  songsList.value = res.playlistShow
+  songlist.value = res.playlistShow
   playlistInfo.value = res.playlistDetail
   loadingBar.finish()
   dataLoading.value = false
 }
+
+const router = useRouter()
+const goPlay = (song: any) => {
+  window.sessionStorage.setItem('songlist', JSON.stringify(songlist.value))
+  window.sessionStorage.setItem('targetSong', JSON.stringify(song))
+  router.push({
+    name: 'Playing',
+  })
+}
 onBeforeMount(() => {
   if (route.params.playlistID) {
-    getsongslist(route.params.playlistID as string)
+    getsonglist(route.params.playlistID as string)
     return
   }
-  getsongslist(window.sessionStorage.getItem('currentPlaylistID')!)
+  getsonglist(window.sessionStorage.getItem('currentPlaylistID')!)
 })
 watch(
   () => route.params.playlistID,
@@ -98,7 +105,7 @@ watch(
         picUrl: '',
         tags: [],
       }
-      getsongslist(val as string)
+      getsonglist(val as string)
     }
   }
 )

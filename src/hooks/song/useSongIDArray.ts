@@ -6,6 +6,7 @@ export default async function useIDGetInfo(id: string) {
     artist: string
     picurl: string
     id: string
+    playurl: string
   }
 
   const result: ISong[] = []
@@ -29,6 +30,18 @@ export default async function useIDGetInfo(id: string) {
       artist: artistsFull,
       picurl: item.al.picUrl,
       id: item.id,
+      playurl: `https://music.163.com/song/media/outer/url?id=${item.id}.mp3`,
+    })
+  })
+
+  const resUrl = await songApi.songUrlV1({
+    id,
+  })
+  resUrl.data.forEach((i: { id: string; url: string }) => {
+    result.forEach((it) => {
+      if (it.id === i.id) {
+        it.playurl = i.url
+      }
     })
   })
   return result

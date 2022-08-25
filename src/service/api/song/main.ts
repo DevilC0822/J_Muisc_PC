@@ -10,6 +10,10 @@ export const songDetail = (params: T.ISongDetail) => {
 export const songUrl = (params: T.ISsongUrl) => {
   return http.get('/song/url', params)
 }
+// 获取歌曲新url
+export const songUrlV1 = (params: T.ISongUrlV1) => {
+  return http.get('/song/url/v1', params)
+}
 
 // 获取每日推荐歌曲
 export const recommendSongs = () => {
@@ -29,6 +33,7 @@ export const historySongsData = (params: T.IHistorySongsData) => {
 export default {
   songDetail,
   songUrl,
+  songUrlV1,
   recommendSongs,
   historySongsDate,
   historySongsData,

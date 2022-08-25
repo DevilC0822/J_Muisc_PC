@@ -9,3 +9,8 @@ export interface ISsongUrl {
 export interface IHistorySongsData {
   date: string
 }
+
+export interface ISongUrlV1 {
+  id: string
+  level?: string // 播放音质等级, 分为 standard => 标准, exhigh=>极高, lossless=>无损, hires=>Hi-Res
+}
