@@ -38,12 +38,7 @@
     ></SingerAlbums>
     <p class="text-[3.6rem] font-bold mt-[2rem]">{{ singerDetail?.name! }}的单曲</p>
     <div>
-      <n-data-table
-        :data="songsList"
-        :columns="columns"
-        max-height="90rem"
-        :loading="dataLoading"
-      ></n-data-table>
+      <Songlist :songlist="songlist" :data-loading="dataLoading"></Songlist>
     </div>
   </section>
 </template>
@@ -54,6 +49,7 @@ import { useRoute } from 'vue-router'
 import { useLoadingBar } from 'naive-ui'
 import useSingerID from '@/hooks/singer/useSingerID'
 import SingerAlbums from '@/components/SingerAlbums.vue'
+import Songlist from '@/components/Songlist.vue'
 
 interface ISingerDetail {
   name: string
@@ -67,25 +63,15 @@ const loadingBar = useLoadingBar()
 const dataLoading = ref(false)
 const route = useRoute()
 
-const columns = [
-  {
-    title: '歌曲名',
-    key: 'name',
-  },
-  {
-    title: '歌手',
-    key: 'artist',
-  },
-]
-const songsList = ref<any>([])
+const songlist = ref<any>([])
 const singerDetail = ref<ISingerDetail>()
 const getInfo = async (id: string) => {
   window.sessionStorage.setItem('currentSingerID', id)
-  songsList.value = []
+  songlist.value = []
   loadingBar.start()
   dataLoading.value = true
   const res = await useSingerID(id)
-  songsList.value = res.songslistShow
+  songlist.value = res.songlistShow
   singerDetail.value = res.singerDetail
   loadingBar.finish()
   dataLoading.value = false
@@ -95,7 +81,7 @@ onBeforeMount(() => {
     getInfo(route.params.singerID as string)
     return
   }
-  getInfo(window.sessionStorage.getItem('currentSingerID')!)
+  getInfo(window.sessionStorage.getItem('keywords')!)
 })
 watch(
   () => route.params.singerID,

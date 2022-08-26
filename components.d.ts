@@ -22,6 +22,8 @@ declare module '@vue/runtime-core' {
     NLoadingBarProvider: typeof import('naive-ui')['NLoadingBarProvider']
     NMessageProvider: typeof import('naive-ui')['NMessageProvider']
     NModal: typeof import('naive-ui')['NModal']
+    NPagination: typeof import('naive-ui')['NPagination']
+    NPopselect: typeof import('naive-ui')['NPopselect']
     NRadioButton: typeof import('naive-ui')['NRadioButton']
     NRadioGroup: typeof import('naive-ui')['NRadioGroup']
     NSelect: typeof import('naive-ui')['NSelect']
@@ -34,5 +36,6 @@ declare module '@vue/runtime-core' {
     RouterView: typeof import('vue-router')['RouterView']
     Search: typeof import('./src/components/Search.vue')['default']
     SingerAlbums: typeof import('./src/components/SingerAlbums.vue')['default']
+    Songlist: typeof import('./src/components/Songlist.vue')['default']
   }
 }

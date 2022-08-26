@@ -10,7 +10,7 @@
         </n-form-item>
         <template #action>
           <n-button style="margin-right: 2rem" @click="emit('closeModal')"> 取消 </n-button>
-          <n-button type="primary" @click="loginIn"> 登录 </n-button>
+          <n-button type="primary" @click="loginIn('')"> 登录 </n-button>
           <n-button quaternary type="primary" style="margin-left: 2rem" @click="loginType = 1"
             >换个登录方式? 手机验证码登录</n-button
           >

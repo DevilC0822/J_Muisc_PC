@@ -2,8 +2,8 @@
 import axios, { AxiosRequestConfig } from 'axios'
 
 // 设置请求头和请求路径
-// axios.defaults.baseURL = '/api'
-axios.defaults.baseURL = 'http://175.24.198.84:3000/'
+axios.defaults.baseURL = '/api'
+// axios.defaults.baseURL = 'http://175.24.198.84:3000/'
 
 axios.defaults.timeout = 10000
 axios.defaults.withCredentials = true

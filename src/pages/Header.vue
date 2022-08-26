@@ -9,13 +9,27 @@
       </svg>
     </div>
     <div class="search-box ml-10">
-      <n-input placeholder="搜索" round class="search-input">
-        <template #prefix>
-          <svg class="icon" aria-hidden="true">
-            <use xlink:href="#icon-search"></use>
-          </svg>
-        </template>
-      </n-input>
+      <n-popselect
+        v-model:value="keywords"
+        style="width: 73rem"
+        :options="options"
+        trigger="click"
+        :on-update:value="popselectChange"
+      >
+        <n-input
+          v-model:value="keywords"
+          :placeholder="showKeyword"
+          round
+          class="search-input"
+          @keyup.enter="search"
+        >
+          <template #prefix>
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-search"></use>
+            </svg>
+          </template>
+        </n-input>
+      </n-popselect>
     </div>
     <div class="w-full flex justify-around items-center">
       <div class="features-box">
@@ -45,11 +59,13 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, watch } from 'vue'
+import { onBeforeMount, reactive, ref, watch } from 'vue'
 import useTheme from '@/hooks/useTheme'
 import { useRouter } from 'vue-router'
 import { useDateFormat, useNow } from '@vueuse/core'
+import searchApi from '@/service/api/search/main'
 
+const keywords = ref('')
 const currentTime = useDateFormat(useNow(), 'YYYY-MM-DD HH:mm:ss')
 const { theme, changeTheme } = useTheme
 const styles = reactive({
@@ -65,6 +81,51 @@ const arrowLeftClick = () => {
 const arrowRightClick = () => {
   router.forward()
 }
+const search = () => {
+  if (keywords.value === '') {
+    keywords.value = realkeyword.value
+  }
+  router.push({
+    name: 'Search',
+    params: {
+      keywords: keywords.value,
+    },
+  })
+}
+
+const showKeyword = ref('')
+const realkeyword = ref('')
+const getDefaultKeywords = async () => {
+  const res = await searchApi.searchKeywordsDefault()
+  showKeyword.value = res.data.showKeyword
+  realkeyword.value = res.data.realkeyword
+}
+
+const getHotKeywordslist = async () => {
+  const res = await searchApi.searchKeywordsHot()
+  console.log(res)
+  options.value = []
+  res.result.hots.forEach((item: { first: any }) => {
+    options.value.push({
+      label: item.first,
+      value: item.first,
+    })
+  })
+}
+const options = ref([
+  {
+    label: 'Drive My Car',
+    value: 'Drive My Car',
+  },
+])
+const popselectChange = (val: string) => {
+  keywords.value = val
+  search()
+}
+onBeforeMount(async () => {
+  getDefaultKeywords()
+  getHotKeywordslist()
+})
 
 watch(
   () => theme.value?.name,
@@ -116,6 +177,7 @@ watch(
       width: 80.7rem;
       height: 6rem;
       border-radius: 5rem;
+
       :deep(.n-input__input-el) {
         height: 100%;
       }

@@ -18,12 +18,7 @@
       </n-tooltip>
     </n-space>
     <div class="mt-[2rem]">
-      <n-data-table
-        :data="songsList"
-        :columns="columns"
-        max-height="90rem"
-        :loading="dataLoading"
-      ></n-data-table>
+      <Songlist :songlist="songlist" :data-loading="dataLoading"></Songlist>
     </div>
   </section>
 </template>
@@ -33,6 +28,7 @@ import { onBeforeMount, ref } from 'vue'
 import { useLoadingBar } from 'naive-ui'
 import songApi from '@/service/api/song/main'
 import useSongIDArray from '@/hooks/song/useSongIDArray'
+import Songlist from '@/components/Songlist.vue'
 
 const recommendDate = ref('today')
 const recommendDesc = ref('您已尊享查看60天内近5次历史日推的特权')
@@ -44,17 +40,8 @@ const recommendOptions = ref<{ label: string; value: string }[]>([
 ])
 const loadingBar = useLoadingBar()
 const dataLoading = ref(false)
-const columns = [
-  {
-    title: '歌曲名',
-    key: 'name',
-  },
-  {
-    title: '歌手',
-    key: 'artist',
-  },
-]
-const songsList = ref<any>([])
+
+const songlist = ref<any>([])
 const getRecommendedSongs = async () => {
   loadingBar.start()
   dataLoading.value = true
@@ -64,7 +51,7 @@ const getRecommendedSongs = async () => {
     ids.push(item.id)
   })
   const result = await useSongIDArray(ids.join(','))
-  songsList.value = result
+  songlist.value = result
   loadingBar.finish()
   dataLoading.value = false
 }
@@ -92,7 +79,7 @@ const getHistoryData = async (date: string) => {
     ids.push(item.id)
   })
   const result = await useSongIDArray(ids.join(','))
-  songsList.value = result
+  songlist.value = result
   loadingBar.finish()
   dataLoading.value = false
 }

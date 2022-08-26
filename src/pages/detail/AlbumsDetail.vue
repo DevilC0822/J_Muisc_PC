@@ -27,12 +27,7 @@
       </div>
     </template>
     <div class="mt-[2rem]">
-      <n-data-table
-        :data="songsList"
-        :columns="columns"
-        max-height="90rem"
-        :loading="dataLoading"
-      ></n-data-table>
+      <Songlist :songlist="songlist" :data-loading="dataLoading"></Songlist>
     </div>
   </section>
 </template>
@@ -42,6 +37,8 @@ import { onBeforeMount, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import useAlbumsID from '@/hooks/albums/useAlbumsID'
 import { useLoadingBar } from 'naive-ui'
+import Songlist from '@/components/Songlist.vue'
+
 interface IAlbumsDetail {
   commentCount: number // 评论数
   shareCount: number // 分享数
@@ -58,35 +55,25 @@ const loadingBar = useLoadingBar()
 const dataLoading = ref(false)
 const route = useRoute()
 
-const columns = [
-  {
-    title: '歌曲名',
-    key: 'name',
-  },
-  {
-    title: '歌手',
-    key: 'artist',
-  },
-]
-const songsList = ref<any>([])
+const songlist = ref<any>([])
 const albumsInfo = ref<IAlbumsDetail>()
-const getsongslist = async (id: string) => {
+const getsonglist = async (id: string) => {
   window.sessionStorage.setItem('currentAlbumsID', id)
-  songsList.value = []
+  songlist.value = []
   loadingBar.start()
   dataLoading.value = true
   const res = await useAlbumsID(id)
-  songsList.value = res.songslistShow
+  songlist.value = res.songlistShow
   albumsInfo.value = res.albumsDynamicDetail
   loadingBar.finish()
   dataLoading.value = false
 }
 onBeforeMount(() => {
   if (route.params.albumsID) {
-    getsongslist(route.params.albumsID as string)
+    getsonglist(route.params.albumsID as string)
     return
   }
-  getsongslist(window.sessionStorage.getItem('currentAlbumsID')!)
+  getsonglist(window.sessionStorage.getItem('currentAlbumsID')!)
 })
 watch(
   () => route.params.albumsID,
@@ -103,7 +90,7 @@ watch(
         company: '',
         singer: '',
       }
-      getsongslist(val as string)
+      getsonglist(val as string)
     }
   }
 )

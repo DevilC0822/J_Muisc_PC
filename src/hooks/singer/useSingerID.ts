@@ -41,8 +41,8 @@ export async function getSongslistShow(id: string) {
   resSongs.hotSongs.forEach((item: { id: string }) => {
     songslistIds.push(item.id)
   })
-  const songslistShow = await useSongIDArray(songslistIds.join(','))
-  return songslistShow
+  const songlistShow = await useSongIDArray(songslistIds.join(','))
+  return songlistShow
 }
 
 export async function getAlbumsShow(id: string, limit = null) {
@@ -77,12 +77,12 @@ export async function getAlbumsShow(id: string, limit = null) {
 // 使用歌单id 获取歌曲列表展示的信息
 export default async function useSingerID(id: string) {
   const singerDetail = await getSingerDetail(id)
-  const songslistShow = await getSongslistShow(id)
+  const songlistShow = await getSongslistShow(id)
   const albumslist = await getAlbumsShow(id)
 
   return {
     singerDetail,
-    songslistShow,
+    songlistShow,
     albumslist,
   }
 }

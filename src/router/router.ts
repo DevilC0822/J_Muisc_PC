@@ -69,6 +69,14 @@ const routes: RouteRecordRaw[] = [
         name: 'AlbumsDetail',
         component: () => import('@/pages/detail/AlbumsDetail.vue'),
       },
+      {
+        path: 'Search',
+        name: 'Search',
+        component: () => import('@/pages/Search.vue'),
+        meta: {
+          keepAlive: false,
+        },
+      },
     ],
   },
   {

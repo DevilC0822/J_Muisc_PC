@@ -31,30 +31,19 @@
         </div>
       </div>
     </template>
-    <div class="songlist-box mt-[2rem]">
-      <div class="flex text-[1.6rem] items-center">
-        <p class="w-[45rem]">歌曲名</p>
-        <p class="text-[1.4rem] w-[35rem]">歌手</p>
-      </div>
-      <div
-        v-for="item in songlist"
-        :key="item.name"
-        class="flex text-[1.6rem] items-center"
-        @click="goPlay(item)"
-      >
-        <p class="w-[45rem]">{{ item.name }}</p>
-        <p class="text-[1.4rem] w-[35rem]">{{ item.artist }}</p>
-      </div>
+    <div class="mt-[2rem]">
+      <Songlist :songlist="songlist" :data-loading="dataLoading"></Songlist>
     </div>
   </section>
 </template>
 
 <script setup lang="ts">
 import { onBeforeMount, ref, watch } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { useRoute } from 'vue-router'
 import usePlayListID from '@/hooks/playlist/usePlayListID'
 import { useLoadingBar } from 'naive-ui'
-import { useStorage } from '@vueuse/core'
+import Songlist from '@/components/Songlist.vue'
+
 interface IPlaylistDetail {
   name: string
   description: string
@@ -80,14 +69,6 @@ const getsonglist = async (id: string) => {
   dataLoading.value = false
 }
 
-const router = useRouter()
-const goPlay = (song: any) => {
-  window.sessionStorage.setItem('songlist', JSON.stringify(songlist.value))
-  window.sessionStorage.setItem('targetSong', JSON.stringify(song))
-  router.push({
-    name: 'Playing',
-  })
-}
 onBeforeMount(() => {
   if (route.params.playlistID) {
     getsonglist(route.params.playlistID as string)

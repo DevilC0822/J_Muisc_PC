@@ -43,9 +43,9 @@ export default async function useAlbumsID(id: string) {
   resSongs.songs.forEach((item: { id: string }) => {
     songslistIds.push(item.id)
   })
-  const songslistShow = await useSongIDArray(songslistIds.join(','))
+  const songlistShow = await useSongIDArray(songslistIds.join(','))
   return {
     albumsDynamicDetail,
-    songslistShow,
+    songlistShow,
   }
 }
